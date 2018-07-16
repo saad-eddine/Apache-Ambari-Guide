@@ -1,0 +1,712 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+
+        <title>Implémentation d’un environnement BigData sous un environnement serveur avec Apache Ambari</title>
+
+        <meta name="description" content="Ce billet présente HDP 2.6.3, la distribution Hadoop de Hortonworks, et comment l’installer et configurer. Il aborde également Ambari.">
+
+        <!-- Icons -->
+        <link rel="shortcut icon" href="assets/media/favicons/favicon.png">
+        <link rel="icon" type="image/png" sizes="192x192" href="assets/media/favicons/favicon-192x192.png">
+        <link rel="apple-touch-icon" sizes="180x180" href="assets/media/favicons/apple-touch-icon-180x180.png">
+
+        <!-- Stylesheets -->
+        <link href="https://fonts.googleapis.com/css?family=Nunito:300,400,400i,600,700" rel="stylesheet">
+        <link rel="stylesheet" href="assets/css/pix.docs.min.css">
+    </head>
+    <body>
+        <!-- Page Container -->
+        <div id="page-container" class="sidebar-o side-scroll">
+            <!-- Sidebar -->
+            <nav id="sidebar">
+                <!-- Sidebar Content -->
+                <div class="sidebar-content">
+                    <div class="content-side content-side-full pos-relative">
+                        <!-- Close Sidebar, Visible only on mobile screens -->
+                        <div class="pos-absolute pos-top-right d-lg-none">
+                            <a class="d-inline-block text-danger m-3" href="javascript:void(0)" data-toggle="layout" data-action="sidebar_close">
+                                <i class="fa fa-times"></i>
+                            </a>
+                        </div>
+                        <!-- END Close Sidebar -->
+
+                        <!-- Side Header -->
+                        <div class="mb-3">
+                            <h1 class="font-size-lg font-w700 mb-2">
+                                Guide <a href="">Apache Ambari</a>
+                            </h1>
+                            <div class="font-size-sm font-w600 text-muted"> June 15, 2018</div>
+                        </div>
+                        <!-- END Side Header -->
+
+                        <!-- Side Navigation -->
+                        <ul class="nav-main">
+                            <li class="nav-main-heading">Introduction</li>
+                            <li class="nav-main-item">
+                                <a class="nav-main-link" href="#section-changelog" data-toggle="scroll-to" data-offset="50">
+                                    <i class="nav-main-link-icon fa fa-list text-primary"></i>
+                                    <span class="nav-main-link-name">Hortonworks</span>
+                                </a>
+                            </li>
+                            <li class="nav-main-item">
+                                <a class="nav-main-link" href="#section-updating" data-toggle="scroll-to" data-offset="50">
+                                    <i class="nav-main-link-icon fa fa-arrow-up text-primary"></i>
+                                    <span class="nav-main-link-name">Architecture de HDP</span>
+                                </a>
+                            </li>
+                            <li class="nav-main-heading">Installation</li>
+                            <li class="nav-main-item">
+                                <a class="nav-main-link" href="#section-package" data-toggle="scroll-to" data-offset="50">
+                                    <i class="nav-main-link-icon fa fa-briefcase text-muted"></i>
+                                    <span class="nav-main-link-name">Solution mise en place</span>
+                                </a>
+                            </li>
+                            <li class="nav-main-item">
+                                <a class="nav-main-link" href="#section-bootstrap" data-toggle="scroll-to" data-offset="50">
+                                    <i class="nav-main-link-icon fa fa-rocket text-muted"></i>
+                                    <span class="nav-main-link-name">Gestion du cluster avec Apache Ambari</span>
+                                </a>
+                            </li>
+                            <li class="nav-main-item">
+                                <a class="nav-main-link" href="#section-gulp" data-toggle="scroll-to" data-offset="50">
+                                    <i class="nav-main-link-icon fa fa-tasks text-muted"></i>
+                                    <span class="nav-main-link-name">Exemple(pas encore)</span>
+                                </a>
+                            </li>
+                           
+                          
+                            <li class="nav-main-heading">Objectif</li>
+                            <li class="nav-main-item">
+                                <a class="nav-main-link" href="#section-thankyou" data-toggle="scroll-to" data-offset="50">
+                                    <i class="nav-main-link-icon fa fa-heart text-danger"></i>
+                                    <span class="nav-main-link-name">Merci</span>
+                                </a>
+                            </li>
+                            <li class="nav-main-item">
+                                <a class="nav-main-link" href="http://fst-usmba.ac.ma">
+                                    <i class="nav-main-link-icon fa fa-globe text-danger"></i>
+                                    <span class="nav-main-link-name">FST Fès</span>
+                                </a>
+                            </li>
+                        </ul>
+                        <!-- END Side Navigation -->
+                    </div>
+                </div>
+                <!-- Sidebar Content -->
+            </nav>
+            <!-- END Sidebar -->
+
+            <!-- Main Container -->
+            <main id="main-container">
+                <!-- Toggle Sidebar -->
+                <div class="pos-fixed pos-ontop-content d-print-none">
+                    <button type="button" class="btn btn-secondary pos-absolute pos-top-left m-1 m-lg-3" data-toggle="layout" data-action="sidebar_toggle">
+                        <i class="fa fa-bars"></i>
+                    </button>
+                </div>
+                <!-- END Toggle Sidebar -->
+
+       
+                <!-- Page Content -->
+                <div class="content">
+                    <!-- Changelog -->
+                    <h2 id="section-changelog" class="mt-0">Presentation</h2>
+                    <div class="accordion" id="changelog">
+                        <!-- Update 1.1 -->
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h5 class="mb-0" id="changelog-update11-h">
+                                    <button class="btn btn-link font-w600 p-0" type="button" data-toggle="collapse" data-target="#changelog-update11-c" aria-expanded="true" aria-controls="changelog-update11-c">
+                                        Hortonworks
+                                    </button>
+                                </h5>
+                               
+                            </div>
+                            <div id="changelog-update11-c" class="collapse show" aria-labelledby="changelog-update11-h" data-parent="#changelog">
+                                <div class="card-body">
+                                    <h4>Plate-forme de données Hortonworks</h4>
+                                    <ul class="fa-ul">
+                                        <li>
+                                            La plate-forme de données <code>Hortonworks</code>, alimentée par <code>Apache Hadoop</code>, 
+											est une plate-forme open source
+											massivement évolutive et 100% permettant de stocker, traiter et analyser de gros volumes de données.
+											Il est conçu pour traiter les données provenant de nombreuses sources et formats d'une manière 
+											très rapide, facile et rentable. La plate-forme de données Hortonworks comprend l'ensemble 
+											essentiel de projets Apache Hadoop, y compris <code>MapReduce</code>, <code>Hadoop Distributed File System (HDFS)</code>,
+											<code>HCatalog</code>, <code>Pig</code>, <code>Hive</code>, <code>HBase</code>, <code>ZooKeeper</code> et <code>Ambari</code>. Hortonworks est le principal contributeur de 
+											code et de correctifs pour plusieurs de ces projets.
+											Contrairement à d'autres fournisseurs de plates-formes construites avec Apache Hadoop, 
+											Hortonworks apporte 100% de notre code à Apache Software Foundation. La plate-forme de données
+											Hortonworks est sous licence Apache et entièrement open source. Nous ne vendons que des services
+											d'assistance technique, de formation et d' assistance aux partenaires. Toute notre technologie 
+											est, et restera, libre et open source.
+											Veuillez visiter la page Hortonworks Data Platform pour plus d'informations sur la technologie
+											Hortonworks. Pour plus d'informations sur les services Hortonworks, visitez la page Support ou
+											Training . N'hésitez pas à nous contacter directement pour discuter de vos besoins spécifiques.
+                                        </li>
+                                    </ul>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                        <!-- END Update 1.1 -->
+
+                        <!-- Release 1.0 -->
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h5 class="mb-0">
+                                    
+                                </h5>
+                                <div class="font-size-sm text-muted"></div>
+                            </div>
+                        </div>
+                        <!-- END Release 1.0 -->
+                    </div>
+                    <!-- END Changelog -->
+
+                    <!-- Updating -->
+                <h2 id="section-updating">Architecture de HDP</h2>
+                    <p>
+                        <strong>Hortonworks </strong> développe, commercialise et maintient HDP (Hortonworks Data Platform), une plateforme
+						Hadoop permettant de stocker, traiter et analyser un gros volume de données. HDP supporte un certain nombre de 
+						composants faisant partie de l’écosystème Hadoop : HDFS (Hadoop Distributed File System), MapReduce, Hive, Pig, 
+						HBase, ZooKeeper,… Et est capable d’également supporter Storm et Spark pour l’analyse temps-réel, et bien d’autres 
+						technologies.
+                    </p>
+					<p>
+						L’architecture de HDP 2.6 est la suivante :
+					</p>
+					<div class="text-center">
+					<img src="assets/media/01.png" class="img-fluid img-thumbnail" alt="Architecture du cluster">
+					</div>
+									
+					</br></br>
+						<ul class="fa-ul">
+                            <li>
+                                <i class="fa fa-angle-double-up fa-li text-info"></i> <code>Data Integration & Governance :</code> simplification et contrôle du 
+								cycle de vie des données avec Falcon, ingestion de données en temps-réel avec Flume et Storm, intégration en
+								mode batch avec Sqoop, WebHDFS, NFS…
+							</li>
+							  <li>
+                                <i class="fa fa-angle-double-down fa-li text-info"></i> <code>Data Access :</code> MapReduce pour l’analyse en mode batch,
+								Pig pour le scripting ETL (Extract, Transform, Load), Hive comme base de données relationnelle avec langage
+								SQL (HiveQL), HBase et Accumulo comme bases de données NoSQL, Storm pour les traitements temps-réels, Spark
+								pour les traitements temps-réels in-memory,…
+							</li>
+							  <li>
+                                <i class="fa fa-angle-double-up fa-li text-info"></i> <code>Data Management :</code> HDFS comme système de stockage, YARN comme 
+								cluster de management de traitements. Ils forment le centre névralgique de HDP.
+							</li>
+							<li>
+                                <i class="fa fa-angle-double-down fa-li text-info"></i> <code>Security :</code> sécurisation des accès avec Knox, Falcon et Hive, 
+								protection de données avec Falcon et WebHDFS.
+							</li>
+							<li>
+                                <i class="fa fa-angle-double-up fa-li text-info"></i> <code>Operations :</code> monitoring avec Ambari, planification avec Oozie.
+							</li>
+                        </ul>
+						 <p>
+						Côté exploitation, HDP est utilisable aussi bien sur Linux que sur Windows. Et peut être accessible en mode cloud 
+						(Azure,…), virtualisé (VMWare,…) et d'autres.  
+					     </p>
+                    
+                    <!-- END Updating -->
+
+                    <!-- Package -->
+                <h2 id="section-package">Architecture du cluster mise en place</h2>
+                    <p>
+						Le schéma ci-dessous présente l'architecture du cluster hadoop que j'ai mis en place dans le cadre de ce travail.
+                    </p>
+					<div class="text-center">
+						<img src="assets/media/archi.png" class="img-fluid img-thumbnail" alt="Architecture du cluster">
+					</div>
+					</br>
+                    <p>
+						Ce cluster est constitué de postes standards équipés de système d'exploitation Ubuntu server (version 16.04). Cette architecture est hébergée dans un environnement virtuel, ce qui nous a permis de tester la virtualisation d'un cluster Hadoop. le schéma de la figure 6 présente les différentes machines (maître et esclave) du cluster.
+						Pour réaliser cette architecture, on doit tout d’abord installer Ubuntu Server 16.04 sur notre serveur et installer QEMU qui est un logiciel libre de machine virtuelle open source, pouvant émuler un processeur et, plus généralement, une architecture différente si besoin. Il permet d'exécuter un ou plusieurs systèmes d'exploitation via les hyperviseurs KVM et Xen.
+						Il est a noté que KVM est complètement libre, performant et très facile à installer et à utiliser. L'interface graphique virt-manager pourra aider les néophytes à paramétrer KVM et pourra rendre la vie plus simple aux administrateurs réseaux.
+                    </p>
+					
+				<h2 id="section-package">Test de l’environnement</h2>
+					<p>
+						Comme une première étape il faut s’assurer que notre processeur supporte la virtualisation matérielle et, si c’est
+						bien le cas, il faut également que ce support est bien activé par le BIOS. Pour cela on utilise cette commande:
+                    </p>
+					<div class="text-center">
+						<img src="assets/media/0.jpg" class="img-fluid img-thumbnail" alt="">
+					</div>
+					</br>
+					<p>
+						Si 0 cela signifie que notre CPU ne supporte pas la virtualisation matérielle.
+						Si c'est le cas pour 1 ou plus, on doit s’assurer que la virtualisation est activée dans le BIOS.
+                    </p>
+				<h2 id="section-package">Déploiement de la plateforme </h2>
+					<p>
+						On commence par l’installation de quelques paquets afin d’installer KVM parmi ces paquets libvirt, c’est une API 
+						libre, daemon et outil de gestion pour gérer de nombreuses plateformes de virtualisation. 
+                    </p>
+					<div class="text-center">
+						<img src="assets/media/01.jpg" class="img-fluid img-thumbnail" alt="">
+					</div>
+					</br>
+					<p>
+						Pour que nos utilisateurs puissent créer des machines virtuelles, on les ajoutes aux groupes suivants : 
+                    </p>
+					<div class="text-center">
+						<img src="assets/media/02.jpg" class="img-fluid img-thumbnail" alt="">
+					</div>
+					</br>
+					<p>
+						Après on doit installer un mode graphique dans notre serveur(xfce4) afin d’installer un outil graphique pour gérer 
+						les machines virtuelles. 
+                    </p>
+					<div class="text-center">
+						<img src="assets/media/03.jpg" class="img-fluid img-thumbnail" alt="">
+					</div>
+					</br>
+					<p>
+						Pour créer une machine virtuelle KVM, on lance le gestionnaire de machines virtuelles.
+                    </p>
+					<div class="text-center">
+						<img src="assets/media/04.png" class="img-fluid img-thumbnail" alt="">
+					</div>
+					</br>
+					<p>
+					On sélectionne le média d'installation puis cliquez sur "Suivant".
+					</p>
+					<div class="text-center">
+						<img src="assets/media/05.png" class="img-fluid img-thumbnail" alt="">
+					</div>
+					</br>
+					<p>
+					Après on Sélectionne l'image ISO, le type de système d'exploitation et la version, et on Clique sur "Suivant".
+                    </p>
+					<div class="text-center">
+						<img src="assets/media/06.png" class="img-fluid img-thumbnail" alt="">
+					</div>
+					</br>
+					<p>
+					Puis on Sélectionne la RAM et le nombre de CPU. Cliquez sur "Suivant".
+					</p>
+					<div class="text-center">
+						<img src="assets/media/07.png" class="img-fluid img-thumbnail" alt="">
+					</div>
+					</br>
+					<p>
+					Aussi on indique la taille du disque dur. Cliquez sur "Suivant".
+					</p>
+					<div class="text-center">
+						<img src="assets/media/08.png" class="img-fluid img-thumbnail" alt="">
+					</div>
+					</br>
+					<p>
+					Comme dernière étape on donne un nom à la machine virtuelle et on Installe Ubuntu en suivant les étapes habituelles, durant 
+					l’installation on installe SSH qui va nous permettre d’accéder à distance après.
+					</p>
+					<div class="text-center">
+						<img src="assets/media/09.png" class="img-fluid img-thumbnail" alt="">
+					</div>
+					</br>
+					<p>
+					A la fin de l’installation, on peut accéder à notre système sans problème.
+					</p>
+					<div class="text-center">
+						<img src="assets/media/10.jpg" class="img-fluid img-thumbnail" alt="">
+					</div>
+					</br>
+					<p>
+					On a réalisé les mêmes étapes pour l’ensemble des autres machines et voilà le résultat 
+					</p>
+					<div class="text-center">
+						<img src="assets/media/11.png" class="img-fluid img-thumbnail" alt="">
+					</div>
+					
+				<h2 id="section-package">Configuration des interfaces réseau </h2>
+					<p>
+					Maintenant on va configurer nos machines en mode bridge, comme vous le savez le mode bridge permet à la machine 
+					virtuelle d’être accessible depuis l’extérieur en utilisant directement la carte réseau de l’hôte. Ainsi, d’un point
+					de vue réseau, notre machine aura sa propre adresse IP. Ce mode n’est pas pris en charge par défaut, en tout cas sous Debian, mais reste très simple à configurer, comme on va le voir par la suite.
+					Ce mode nécessite l’installation du paquet bridge-utils.
+					</p>
+					<div class="text-center">
+						<img src="assets/media/12.png" class="img-fluid img-thumbnail" alt="">
+					</div>
+					</br>
+					<p>
+					Ensuite, on va juste à modifier le fichier de configuration /etc/network/interfaces comme ceci (si l’hôte est en
+					IP fixe) :
+					</p>
+					<div class="text-center">
+						<img src="assets/media/13.png" class="img-fluid img-thumbnail" alt="">
+					</div>
+					</br>
+					<p>
+					Puis en redémarre les services réseau :
+					</p>
+					<div class="text-center">
+						<img src="assets/media/14.png" class="img-fluid img-thumbnail" alt="">
+					</div>
+					</br>
+					<p>
+					Ensuite, on a ajouté dans le fichier etc/hosts les adresses ip des machines et leurs noms (hostname) afin de l’utiliser 
+					après dans l’installation des services de Ambari. 
+					</p>
+					<div class="text-center">
+						<img src="assets/media/15.png" class="img-fluid img-thumbnail" alt="">
+					</div>
+					
+				<h2 id="section-package">Installation des prérequis</h2>
+					<p>
+					Hadoop nécessite une version Java 7 ou au moins Java 6. Pour cette démonstration, la version 8 de Java sera utilisée via la 
+					distribution OpenJDK. Voir commande ci-dessous pour installer OpenJDK 8 sur un Linux. 
+					</p>
+					<div class="text-center">
+						<img src="assets/media/16.png" class="img-fluid img-thumbnail" alt="">
+					</div>
+					</br>
+					<p>
+					Après l'installation, on s’assure que la version Java est correctement installée.
+					</p>
+					<div class="text-center">
+						<img src="assets/media/17.png" class="img-fluid img-thumbnail" alt="">
+					</div>
+					
+				<h2 id="section-package">Création de groupe et utilisateur Hadoop</h2>
+					<p>
+					Nous emploierons un utilisateur Hadoop spécifique pour exécuter un nœud Hadoop. Bien que celui-ci ne soit pas requis,
+					il est fortement recommandé de séparer les installations des logiciels afin de garantir un bon niveau de sécurité.
+					</p>
+					<div class="text-center">
+						<img src="assets/media/18.png" class="img-fluid img-thumbnail" alt="">
+					</div>
+					</br>
+					<p>
+					Un utilisateur hduser avec le mot de passe hduser sera créé et ajouté au groupe hadoop. Connectez-vous avec ce nouvel utilisateur.
+					</p>
+				<h2 id="section-package">Configuration ssh pour Hadoop</h2>
+					<p>
+					Hadoop nécessite un accès SSH pour gérer les différents nœuds. Bien que nous soyons dans une configuration simple 
+					nœud, nous avons besoin de configurer l'accès vers localhost pour l'utilisateur hduser que nous venons de créer
+					précédemment. Avant tout, nous devons générer une clé SSH pour l'utilisateur hduser.
+					</p>
+					<div class="text-center">
+						<img src="assets/media/19.png" class="img-fluid img-thumbnail" alt="">
+					</div>
+					</br>
+					<p>
+					Cette commande va créer une clé RSA avec un mot de passe vide. Dans notre cas de virtualisation, l'absence de mot de 
+					passe n'a pas d'importance. Ensuite on autorise l'accès à SSH de la machine avec cette nouvelle clé fraîchement créée.
+					</p>
+					<div class="text-center">
+						<img src="assets/media/20.png" class="img-fluid img-thumbnail" alt="">
+					</div>
+					</br>
+					<p>
+					La dernière chose à réaliser est de tester la connexion SSH à partir de l'utilisateur hduser.
+					</p>
+					<div class="text-center">
+						<img src="assets/media/21.jpg" class="img-fluid img-thumbnail" alt="">
+					</div>
+				<h2 id="section-package">Installation de Hadoop</h2>
+					<p>
+					La distribution Apache fournit une installation par package assez souple. Il est donc possible d'ajouter les différents composants
+					de la distribution Hadoop via le gestionnaire de packages.
+					</p>
+					<div class="text-center">
+						<img src="assets/media/22.png" class="img-fluid img-thumbnail" alt="">
+					</div>
+					</br>
+					<p>
+					Après, on va décompresser le fichier téléchargé avec la commande suivante
+					</p>	
+					<div class="text-center">
+						<img src="assets/media/23.png" class="img-fluid img-thumbnail" alt="">
+					</div>	
+					</br>	
+					<p>
+					Tous les fichiers de configuration d'Hadoop sont disponibles dans le répertoire hadoop-2.7.3/conf. Ensuite on va
+					ajoutez les chemins Hadoop et Java dans le fichier bash (.bashrc) sur tous les nœuds.
+					</p>
+					<div class="text-center">
+						<img src="assets/media/24.png" class="img-fluid img-thumbnail" alt="">
+					</div>
+					</br>
+					<p>
+					Pour appliquer toutes ces modifications, on exécute la commande source et on vérifie la version de hadoop installé.
+					<p>
+					<div class="text-center">
+						<img src="assets/media/25.png" class="img-fluid img-thumbnail" alt="">
+					</div>
+					</br>
+					<p>
+					Il est maintenant possible de consulter le bon fonctionnement de Hadoop à l’aide d’une interface graphique. Par défaut, 
+					elle est disponible sur <a href="http://localhost:50070">http://localhost:50070</a>.
+					</p>
+					<div class="text-center">
+						<img src="assets/media/26.jpg" class="img-fluid img-thumbnail" alt="">
+					</div>
+					
+                    <!-- END Package -->
+
+                    <!-- Bootstrap -->
+                <h2 id="section-bootstrap">Gestion du cluster avec Apache Ambari</h2>
+					<div class="alert alert-primary">
+					<p>
+                        Le projet <a href="https://ambari.apache.org/">Ambari</a> d’Apache, a été initié par le distributeur Hadoop Hortonworks et complète l’écosystème avec un outil d’installation
+						et de gestion qui met à disposition les ressources informatiques et facilite la gestion d’Hadoop. De plus, 
+						Ambari propose un « Step-by-Step-Wizard », une assistance à l’installation étape par étape pour Hadoop. 
+						Une interface utilisateur graphique informe du statut du système. De plus, Ambari permet grâce au 
+						<code>Ambari Metrics System</code> et au <code>Ambari Alert Framework</code> d’enregistrer des métriques et de configurer divers 
+						niveaux d’alarmes.
+                    </p>
+					</div>
+		    	<h2 id="section-bootstrap">Installation et Vérification de Apache Ambari-Server</h2>
+					<p>
+					Sur le masternode, on commence par le téléchargement de « Ambari package » dans un répertoire dans notre hôte d'installation.
+                    </p>
+					<div class="text-center">
+						<img src="assets/media/27.png" class="img-fluid img-thumbnail" alt="">
+					</div>	
+					</br>
+					<p>
+					Après on vérifie l’intégrité du package installé avec la clé publique.
+					</p>
+					<div class="text-center">
+						<img src="assets/media/28.png" class="img-fluid img-thumbnail" alt="">
+					</div>	
+					</br>
+					<p>
+					Ensuite on applique les modifications ajoutées.
+					<p>
+					<div class="text-center">
+						<img src="assets/media/29.png" class="img-fluid img-thumbnail" alt="">
+					</div>	
+					</br>
+					<p>
+					Finalement on confirme que les packages Ambari ont bien été téléchargés en vérifiant la liste des noms des packages
+					avec les commandes suivantes :
+					</p>
+					<div class="text-center">
+						<img src="assets/media/30.png" class="img-fluid img-thumbnail" alt="">
+					</div>
+					<div class="text-center">
+						<img src="assets/media/31.png" class="img-fluid img-thumbnail" alt="">
+					</div>
+					<div class="text-center">
+						<img src="assets/media/32.png" class="img-fluid img-thumbnail" alt="">
+					</div>
+				
+				<h2 id="section-bootstrap">Configuration de Apache Ambari</h2>
+					<p>
+						Avant de démarrer Ambari, on doit configurer le serveur Ambari. La configuration se base sur la connexion de la base 
+						de données avec Ambari et l’installation de JDK sur le serveur.
+						On exécute la commande suivante sur l'hôte du serveur Ambari pour démarrer le processus de configuration et on 
+						continu avec les étapes suivantes :
+					<p>
+					<div class="text-center">
+						<img src="assets/media/33.png" class="img-fluid img-thumbnail" alt="">
+					</div>
+						<div class="text-center">
+						<img src="assets/media/34.png" class="img-fluid img-thumbnail" alt="">
+					</div>
+					<p>
+					La Réponse de l’invite d'installation:
+					</p>
+					<i class="fa fa-check text-success"></i>   Si on ne désactivé pas temporairement SELinux, on va recevoir un avertissement.
+					Pour cela on accepte la valeur par défaut (y) et on continue l’installation.</br></br>
+					<i class="fa fa-check text-success"></i>   Si on souhaite créer un utilisateur différent pour exécuter le serveur Ambari 
+					ou pour affecter un utilisateur précédemment créé, on sélectionne (y), puis on fournisse le nom d'utilisateur souhaiter.</br></br> 
+					<i class="fa fa-check text-success"></i>   Aussi si on n’a pas désactivé temporairement iptables, on va recevoir un avertissement.
+					Après on Sélectionne une version JDK à télécharger, puis on entre 1 pour télécharger Oracle JDK 1.8. 
+			
+				
+				<h2 id="section-bootstrap">Configuration de Apache Ambari</h2>
+					<p>
+					Maintenant, on va passer à configurer les datanodes afin de relier les machines entre eux, pour cette étape, on doit 
+					commencer par l’installation de ambari-agent.
+					</p>
+					<div class="text-center">
+						<img src="assets/media/35.png" class="img-fluid img-thumbnail" alt="">
+					</div>
+					</br>
+					<p>
+					Il faut configurer l’agent Ambari pour toutes les datanodes avec l’adresse de serveur afin d’être joignables.
+					</p>
+					<div class="text-center">
+						<img src="assets/media/36.png" class="img-fluid img-thumbnail" alt="">
+					</div>
+					</br>
+					<p>
+					Pour démarrer l’agent Ambari, il suffit de taper la commande suivant « sudo ambari-agent start ».Après, Il est possible d’accéder
+					à l’interface Web depuis l’adresse  <a href="http://localhost:8080">http://localhost:8080<a>. En utilisant le nom 
+					d’utilisateur <b style="color:Tomato;">admin</b> et le mot de passe par défaut <b style="color:Tomato;">admin</b>.
+					</p>
+					<div class="text-center">
+						<img src="assets/media/37.jpg" class="img-fluid img-thumbnail" alt="">
+					</div>
+					
+				<h2 id="section-bootstrap">Création de Cluster via Apache Ambari</h2>
+					<p>
+					Pour créer le cluster, l'assistant d'installation nous invite à fournir des informations générales sur la manière de le configurer. On commence par nommer le cluster par « BigCluster ».
+					</p>
+					<div class="text-center">
+						<img src="assets/media/38.png" class="img-fluid img-thumbnail" alt="">
+					</div>
+					</br>
+					<p>
+					Le Service Stack est un ensemble coordonné de composants Hortonworks Data Platform (HDP). On Utilise un bouton radio pour
+					sélectionner la version Stack que nous souhaitons installer. Pour installer une pile HDP 2x, on sélectionne le bouton 
+					radio HDP 2.6, HDP 2.5, HDP 2.4 ou HDP 2.3, et on coche le système à configurer (Ubuntu 16.04). 
+					<p>
+					<div class="text-center">
+						<img src="assets/media/39.png" class="img-fluid img-thumbnail" alt="">
+					</div>
+					</br>
+					<p>
+					On donne le nom de domaine complet de chacun de nos hôtes. L'assistant doit également accéder au fichier de clé privée
+					que nous avons créé dans la partie configuration SSH sans mot de passe. Grâce aux noms d'hôte et aux informations sur
+					les fichiers de clés, l'assistant peut localiser, accéder et interagir de manière sécurisée avec tous les hôtes du cluster.</br>
+					Pour qu'Ambari installe automatiquement l'Agent Ambari sur tous nos hôtes en utilisant SSH, on sélectionne Fournir 
+					votre clé privée SSH et on utilise le bouton choisir un fichier pour trouver le fichier de clé privée correspondant à
+					la clé publique que nous avons installée plus tôt sur tous nos hôtes ou couper et coller la clé dans la zone de texte 
+					manuellement ou on peut utiliser un enregistrement manuel sans SSH comme dans notre cas.</br>
+					On utilise la zone de texte Target Hosts pour entrer nos listes de noms d'hôtes, un par ligne. 
+					</p>
+					<div class="text-center">
+						<img src="assets/media/40.png" class="img-fluid img-thumbnail" alt="">
+					</div>
+					</br>
+					<p>
+					Une fois que tous les hôtes sont enregistrés avec succès, voici ce qu'on a reçu.
+					</p>
+					<div class="text-center">
+						<img src="assets/media/41.png" class="img-fluid img-thumbnail" alt="">
+					</div>
+					</br>
+					<p>
+					En plus des éléments de base, l’écosystème Hadoop comprend de nombreuses extensions qui le complètent et qui apportent
+					beaucoup au logiciel Framework en matière de fonctionnalités et de flexibilité. De par le code source ouvert et les
+					nombreuses interfaces, les composants supplémentaires peuvent être intégrés à l’envi aux fonctionnalités de base.</br>
+					La liste suivante dévoile une sélection des projets les plus populaires dans l’écosystème Hadoop qu’on déjà cité dans
+					la partie des composant Hadoop.
+					</p>
+					<div class="text-center">
+						<img src="assets/media/42.png" class="img-fluid img-thumbnail" alt="">
+					</div>
+					<div class="text-center">
+						<img src="assets/media/43.png" class="img-fluid img-thumbnail" alt="">
+					</div>
+					</br>
+					<p>
+					Après on sélectionne les services à installer. C'est là qu'Ambari est très utile, surtout en utilisant Hortonworks ou cloudera, l'ensemble du système peut être installé très rapidement.
+					On doit affecter les composants installés sur notre cluster, on n’a décider d’installer les composants sur deux machines, le masternode et la datanode 4 comme étant namenode secondaire.
+					</p>
+					<div class="text-center">
+						<img src="assets/media/44.png" class="img-fluid img-thumbnail" alt="">
+					</div>
+					</br>
+					<p>
+					Encore une fois, on a choisi d'installer un nœud de données sur tous les hôtes, en donnant 4 nœuds de données et un 
+					master et 2 nodemanager.
+					</p>
+					<div class="text-center">
+						<img src="assets/media/45.png" class="img-fluid img-thumbnail" alt="">
+					</div>
+					</br>
+					<p>
+					Avant de pouvoir continuer, nous devons définir des propriétés spécifiques telles que les informations de connexion
+					pour les services clés, par exemple <code>Hive</code>, <code>Oozie</code>,etc .
+					</p>
+					<div class="text-center">
+						<img src="assets/media/46.png" class="img-fluid img-thumbnail" alt="">
+					</div>
+					</br>
+					<p>
+					On utilisera user/password pour autant de combinaisons nom d'utilisateur /mots de passe que possible.
+					</p>
+					<div class="text-center">
+						<img src="assets/media/47.png" class="img-fluid img-thumbnail" alt="">
+					</div>
+					</br>
+					<p>
+					Note: pour tout mot de passe on utilise le mot : password.</br></br>
+					Cette étape résume l’ensemble de notre configuration, pour confirmer il suffit de cliquer sur déployer.
+					</p>
+					<div class="text-center">
+						<img src="assets/media/48.png" class="img-fluid img-thumbnail" alt="">
+					</div>
+					</br>
+					<p>
+					Il faudra un certain temps pour que ce processus se termine.</br>
+					A la fin nous avons quelques avertissements, pour ce faire nous compléterons l'assistant et regarderons les services qui ne démarrent pas. Il pourrait s'agir d'un conflit de ressources dû à l'allocation de mémos LXC ou à d'autres espaces disque similaires.
+					</p>
+					<div class="text-center">
+						<img src="assets/media/49.png" class="img-fluid img-thumbnail" alt="">
+					</div>
+					</br>
+					<p>
+					Après on clique sur complété.</br>
+					On remarque que l'interface web d’Ambari Server prend un peu de temps pour charger les métriques de cluster, parfois 
+					il est nécessaire de démarrer certains services ou de paramétrer un démarrage par défaut pour tous les services.</br>
+					La figure suivante montre l’interface d’accueil pour Ambari-Server avec tous les 
+					métriques nécessaires pour la surveillance de l’état du cluster.
+					</p>
+					<div class="text-center">
+						<img src="assets/media/50.png" class="img-fluid img-thumbnail" alt="">
+					</div>
+
+					
+					<!-- END Bootstrap -->
+
+                    <!-- Gulp Tasks -->
+                    <h2 id="section-gulp">Exemple d'utilsation</h2>
+                    <p>
+                        <a href="http://test.com">Test</a>Exemple d'utilsation 
+                    </p>
+                    <!-- END Gulp Tasks -->
+
+                   
+                    <!-- Thank You -->
+                    <h2 id="section-thankyou">Objectif !</h2>
+                    <p>
+                        L'objectif du projet est d’établir une base de connaissances sur les technologies du Bigdata, puis de créer une
+						plate-forme Bigdata et son écosystème administrable à distance et facile d’utilisation. La seconde étape du projet
+						est de réaliser une démonstration pratique de cette plateforme pour les doctorants de la <a href="http://fst-usmba.ac.ma">Fst de Fès</a> afin de 
+						démontrer la puissance d’une telle plateforme pour les besoins de la recherche scientifique.
+						
+                    </p>
+                    <p>
+                        <strong>Merci pour tous ceux qui, par leurs remarques et leurs conseils, ont contribué à la réalisation de ce travail.</strong>
+                    </p>
+                    <!-- END Thank You -->
+                </div>
+                <!-- END Page Content -->
+
+                <!--  Logo -->
+                <div class="overflow-hidden py-6 bg-body-light text-center">
+                    <img class="img-fluid invisible" src="assets/media/various/logo.png" alt=" logo" data-toggle="appear" data-class="animated fadeInDown">
+                </div>
+                <!-- END  Logo -->
+            </main>
+            <!-- END Main Container -->
+
+            <!-- Footer -->
+            <footer id="page-footer">
+                <div class="content content-full font-size-sm d-flex flex-column flex-sm-row justify-content-sm-between text-center text-sm-left">
+                    <div class="py-2 py-sm-0">
+                        <strong>CHAFI Saad-Eddine & BALBOUL Younes</strong> &copy; <span class="js-year-copy">2018</span>
+                    </div>
+                   
+                </div>
+            </footer>
+            <!-- END Footer -->
+        </div>
+        <!-- END Page Container -->
+
+        <!-- Docs JS -->
+        <script src="assets/js/pix.docs.min.js"></script>
+    </body>
+</html>
