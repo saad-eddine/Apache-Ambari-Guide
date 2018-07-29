@@ -662,10 +662,123 @@
 					<!-- END Bootstrap -->
 
                     <!-- Gulp Tasks -->
-                    <h2 id="section-gulp">Exemple d'utilsation</h2>
-                    <p>
-                        <a href="http://test.com">Test</a>Exemple d'utilsation 
+                <h2 id="section-gulp">Création des vues « View » dans Apache Ambari</h2>
+					<ul class="fa-ul">
+                    <li>
+						<i class="fa fa-plus fa-li text-success"></i> 	Pour le Service Pig :	
+					</li>
+					</ul> 
+					<p>
+					Avant de commencer, on doit tout d’abord crée une instance du service Pig, pour cela on va suivre les étapes suivantes :
+					</br>On clique sur le menu paramètre (Manage Ambari).
                     </p>
+					<div class="text-center">
+						<img src="assets/media/51.png" class="img-fluid img-thumbnail" alt="">
+					</div>
+					</br>
+					<p>
+					Dans la partie Views, on peut créer une multitude des instances, en nommant le nom de l’instance, sa description et sa visibilité.
+					</p>
+					<div class="text-center">
+						<img src="assets/media/52.jpg" class="img-fluid img-thumbnail" alt="">
+					</div>
+					</br>
+					<p>
+					Dans notre exemple, on va utiliser cette instance « Pig_For_Test ».
+					</p>
+					<div class="text-center">
+						<img src="assets/media/53.jpg" class="img-fluid img-thumbnail" alt="">
+					</div>
+					</br>
+					<p>
+					Il faut obligatoirement mentionner les utilisateurs qui peuvent utiliser cette instance dans la partie permission.
+					</p>
+					<div class="text-center">
+						<img src="assets/media/54.jpg" class="img-fluid img-thumbnail" alt="">
+					</div>
+					</br>
+					<p>
+					Maintenant, on va essayer de créer un script Pig pour le test à partir de l’utilisateur « saad » déjà crée dans Apache Ambari.
+					</p>
+					<div class="text-center">
+						<img src="assets/media/55.png" class="img-fluid img-thumbnail" alt="">
+					</div>
+					</br>
+					<p>
+					Dans l’onglet New Script on va ajouter un nouveau script.
+					</p>
+					<div class="text-center">
+						<img src="assets/media/56.jpg" class="img-fluid img-thumbnail" alt="">
+					</div>
+					</br>
+					<p>
+					Lorsqu’on clique sur « create » on va recevoir une erreur de création, c’est un problème de permission de l’utilisateur « saad ». 
+					</p>
+					<div class="text-center">
+						<img src="assets/media/57.jpg" class="img-fluid img-thumbnail" alt="">
+					</div>
+					</br>
+					<p>
+					Ce problème est simple on va juste crée un dossier de l’utilisateur « saad » et on lui applique les permissions.
+					</p>
+					<div class="text-center">
+						<img src="assets/media/58.jpg" class="img-fluid img-thumbnail" alt="">
+					</div>
+					</br>
+					<p>
+					Après ces commandes, le problème va disparaître et on peut créer un nouveau script sans problème.
+					</p>
+					<div class="text-center">
+						<img src="assets/media/59.jpg" class="img-fluid img-thumbnail" alt="">
+					</div>
+					</br>
+					<div class="card">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h5 class="mb-0" id="bootstrap-update11-h">
+                                    <button class="btn btn-link font-w600 p-0" type="button" data-toggle="collapse" data-target="#bootstrap-update11-c" aria-expanded="true" aria-controls="changelog-update11-c">
+                                         Exemple de Script avec Pig 
+                                    </button>
+                                </h5>
+                            </div>
+                    <div id="bootstrap-update11-c" class="collapse" aria-labelledby="bootstrap-update11-h" data-parent="#bootstrap">
+                    <div class="card-body">
+                            <p class="text-justify">
+								Pour cet exemple, nous analysons l'ensemble de données d'un <code>Aéroport</code> de <code>OpenFlights</code>
+								et nous déterminerons quels pays ont le plus d'aéroports.</br>
+								Ce script simple montre certaines fonctions les plus courantes qu’on peut utiliser lors de 
+								l'écriture d'un script Pig .</br>
+								Pour faire l’exemple nous avons suivi les étapes suivantes :</br></br>
+								Créer un dossier  <a href="javascript:void(0)" />/user/admin/Open </a>et télécharger les données <code>airports</code> :
+							<p>
+					<div class="text-center">
+						<img src="assets/media/60.png" class="img-fluid img-thumbnail" alt="">
+					</div>
+					</br>
+							<p>
+							Maintenant, allez dans 'Pig View' dans Ambari et créez un nouveau script appelé "AirportsPerCountry" et tapez 
+							le code ci-dessous dans votre script:
+							</p>	
+					<div class="text-center">
+						<img src="assets/media/61.png" class="img-fluid img-thumbnail" alt="">
+					</div>
+					</br>
+					<div class="text-center">
+						<img src="assets/media/62.png" class="img-fluid img-thumbnail" alt="">
+					</div>
+                    </div>
+                    </div>
+                    </div>
+				<h2 id="section-gulp">Importation des données </h2>
+					<p>
+					Parmi les services installé <code>Hive</code>, ce dernier permet d’importer une base de données afin d’afficher, analyser et 
+					visualiser les données. Voici les étapes qu’on suivi pour l’importation.</br>
+					Dans la liste des vues, on sélectionne Hive View, on peut créer une table soit par l’importation d’une base de données
+					prête à l'emploi ou la création manuellement.
+					</p>
+					<div class="text-center">
+						<img src="assets/media/63.png" class="img-fluid img-thumbnail" alt="">
+					</div>
+					
                     <!-- END Gulp Tasks -->
 
                    
