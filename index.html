@@ -73,7 +73,7 @@
                             <li class="nav-main-item">
                                 <a class="nav-main-link" href="#section-gulp" data-toggle="scroll-to" data-offset="50">
                                     <i class="nav-main-link-icon fa fa-tasks text-muted"></i>
-                                    <span class="nav-main-link-name">Exemple(pas encore)</span>
+                                    <span class="nav-main-link-name">Exemples</span>
                                 </a>
                             </li>
                            
@@ -778,18 +778,134 @@
 					<div class="text-center">
 						<img src="assets/media/63.png" class="img-fluid img-thumbnail" alt="">
 					</div>
+					<p>
+					On clique sur New Table
+					</p>
+					<div class="text-center">
+						<img src="assets/media/64.png" class="img-fluid img-thumbnail" alt="">
+					</div>
+					</br>
+					<p>
+					Après on mentionne le nom de la table qu'on veut insérer et on clique sur Upload Table
+					</p>
+					<div class="text-center">
+						<img src="assets/media/65.png" class="img-fluid img-thumbnail" alt="">
+					</div>
+					</br>
+					<p>
+					On doit renseigner les informations nécessaires comme le type de fichier téléchargé (CSV, JSON, XML), le séparateur et le 
+					délimiteur de champ.
+					</p>
+					<div class="text-center">
+						<img src="assets/media/66.png" class="img-fluid img-thumbnail" alt="">
+					</div>
+					</br>
+					<p>
+					Ensuite on sélectionne notre base de données de type csv.
+					</p>
+					<div class="text-center">
+						<img src="assets/media/67.png" class="img-fluid img-thumbnail" alt="">
+					</div>
+					</br>
+					<p>
+					On peut aussi nommer les champs de notre base de données, les types de champs et la taille, après on valide avec le
+					bouton create.
+					</p>
+					<div class="text-center">
+						<img src="assets/media/68.png" class="img-fluid img-thumbnail" alt="">
+					</div>
+					</br>
+					<p>
+					Maintenant, la base est ajoutée, on peut manipuler par des requête SQL comme dans cet exemple.
+					</p>
+					<div class="text-center">
+						<img src="assets/media/69.png" class="img-fluid img-thumbnail" alt="">
+					</div>
 					
-                    <!-- END Gulp Tasks -->
+			 <h2 id="section-gulp">Affichage des données </h2>
+					<p>
+					Parfois, il est nécessaire de visualiser les données afin d’analyser correctement.
+					</br>Dans notre exemple, on va commencer par lancer notre requête SQL à partir de la vue de HIVE.
+					</p>
+					<div class="card">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h5 class="mb-0" id="gulp-update11-h">
+                                    <button class="btn btn-link font-w600 p-0" type="button" data-toggle="collapse" data-target="#gulp-update11-c" aria-expanded="true" aria-controls="changelog-update11-c">
+                                         1 ère exemple :
+                                    </button>
+                                </h5>
+                            </div>
+                    <div id="gulp-update11-c" class="collapse" aria-labelledby="bootstrap-update11-h" data-parent="#gulp">
+                    <div class="card-body">
+					<p>
+					Premièrement, on lance la requête SQL
+					</p>
+					<div class="text-center">
+						<img src="assets/media/70.jpg" class="img-fluid img-thumbnail" alt="">
+					</div>
+					<p>
+					</br>
+					Dans la partie analytique, on peut visualiser les données sous forme de graphique. 
+					</br>Deuxièmement, on sélectionne les variables qui nous intéressent. Dans notre cas on a besoin de voir le nombre de livre publié par chaque éditeur.
+					</p>
+					<div class="text-center">
+						<img src="assets/media/71.png" class="img-fluid img-thumbnail" alt="">
+					</div>
+					</br>
+					<p>
+					A la fin, on reçoit notre graphe qui nous permet de faciliter l'analyse des données.
+					</p>
+						
+					<div class="text-center">
+						<img src="assets/media/72.png" class="img-fluid img-thumbnail" alt="">
+					</div>	
+                    </div>
+                    </div>
+                    </div>
+					<br/>
+					<div class="card">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h5 class="mb-0" id="gulp2-update11-h">
+                                    <button class="btn btn-link font-w600 p-0" type="button" data-toggle="collapse" data-target="#gulp2-update11-c" aria-expanded="true" aria-controls="changelog-update11-c">
+                                         2 ème exemple :
+                                    </button>
+                                </h5>
+                            </div>
+                    <div id="gulp2-update11-c" class="collapse" aria-labelledby="glup2-update11-h" data-parent="#gulp2">
+                    <div class="card-body">
+					<p>	
+					On commence comme toujours par la création de notre requête SQL pour visualiser les éditeurs qui ont publié plus 
+					de 20 livre par année et éditeurs.
+                    </p>
+					<div class="text-center">
+						<img src="assets/media/73.png" class="img-fluid img-thumbnail" alt="">
+					</div>
+					</br>
+					<p>
+					Voici le résultat de la commande.
+					</p>
+					<div class="text-center">
+						<img src="assets/media/74.png" class="img-fluid img-thumbnail" alt="">
+					</div>
+					</div>
+                    </div>
+                    </div>
+					
+					
+					<!-- END Gulp Tasks -->
 
                    
                     <!-- Thank You -->
-                    <h2 id="section-thankyou">Objectif !</h2>
+                    <h2 id="section-thankyou">Conclusion !</h2>
                     <p>
-                        L'objectif du projet est d’établir une base de connaissances sur les technologies du Bigdata, puis de créer une
+						L'écosystème Hadoop est constitué de plusieurs briques, qui pour certaines sont similaires en terme de fonctionnalités. Les tests techniques effectués m'ont permit de comprendre que toutes les briques ne sont pas forcément nécessaires pour faire fonctionner le cluster, celui-ci est modulable ; il revient à l'utilisateur de choisir les briques qui lui sont utiles en fonction de ses besoins. L'installation des briques séparément est possible mais il est plus judicieux d'utiliser un gestionnaire de cluster tel que Ambari pour centraliser toutes les tâches de déploiement, d'administration et de supervision du cluster.
+						Déployer une infrastructure Big Data demande de mettre les mains dans le cambouis et de programmer.  On peut faire ce qu'on veut des données, à condition de rentrer dans le code pour obtenir ce qu'il souhaite. 
+					</br></br>
+                        <b>L'objectif du projet est d’établir une base de connaissances sur les technologies du Bigdata, puis de créer une
 						plate-forme Bigdata et son écosystème administrable à distance et facile d’utilisation. La seconde étape du projet
 						est de réaliser une démonstration pratique de cette plateforme pour les doctorants de la <a href="http://fst-usmba.ac.ma">Fst de Fès</a> afin de 
 						démontrer la puissance d’une telle plateforme pour les besoins de la recherche scientifique.
-						
+						</b>
                     </p>
                     <p>
                         <strong>Merci pour tous ceux qui, par leurs remarques et leurs conseils, ont contribué à la réalisation de ce travail.</strong>
